@@ -4,11 +4,11 @@
   </div>
 </template>
 
-<script setup="props">
+<script setup>
 import { defineProps, onBeforeUpdate } from "vue"
 
 const props = defineProps({
-  price: String
+  price: String,
 })
 
 ref: arrow = "↓"
@@ -24,8 +24,6 @@ onBeforeUpdate(() => {
     oldPrice = props.price
   }
 })
-
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

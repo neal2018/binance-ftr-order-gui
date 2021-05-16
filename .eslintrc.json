@@ -23,10 +23,24 @@
         ],
         "no-labels": "off",
         "no-unused-vars": "off",
-        "space-before-function-paren": [
+        "no-undef": "off",
+        "vue/max-len": [
             "error",
-            "never"
-        ],
-        "no-undef": "off"
+            {
+                "code": 120,
+                "template": 120,
+                "tabWidth": 2,
+                "comments": 120,
+                "ignorePattern": "",
+                "ignoreComments": false,
+                "ignoreTrailingComments": false,
+                "ignoreUrls": false,
+                "ignoreStrings": false,
+                "ignoreTemplateLiterals": false,
+                "ignoreRegExpLiterals": false,
+                "ignoreHTMLAttributeValues": false,
+                "ignoreHTMLTextContents": false
+            }
+        ]
     }
 }
