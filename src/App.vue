@@ -22,40 +22,11 @@
 </template>
 
 <script setup>
-import { provide } from "vue"
 import OrderButton from "@/components/OrderButton.vue"
 import PriceShower from "@/components/PriceShower.vue"
 import Setting from "@/components/Setting.vue"
-
-ref: price = "0"
-ref: priceRollingMean = 0
-const rollingAlpha = 0.03
-
-ref: count = 0
-let timestamp = 0
-const socket = new WebSocket("wss://fstream.binance.com/stream?streams=btcusdt@aggTrade/btcusdt@miniTicker")
-socket.addEventListener("message", (event) => {
-  const { stream, data } = JSON.parse(event.data)
-  if (stream === "btcusdt@aggTrade") {
-    if (data.T - timestamp > 500) {
-      price = data.p
-      timestamp = data.T
-      count++
-    }
-  } else if (stream === "btcusdt@miniTicker") {
-    const priceHalfSecond = parseFloat(data.c)
-    if (priceRollingMean === 0) {
-      priceRollingMean = priceHalfSecond
-    }
-    priceRollingMean -= rollingAlpha * (priceRollingMean - priceHalfSecond)
-  }
-})
-
-ref: keys = {
-  apiPublicKey: "",
-  apiPrivateKey: "",
-}
-provide("keys", keys)
+import { keys } from "@/composables/keys"
+import { price, count, priceRollingMean } from "@/composables/prices"
 </script>
 
 <style scoped></style>

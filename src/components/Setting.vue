@@ -28,9 +28,9 @@
 </template>
 
 <script setup>
-import { inject } from "vue"
 import OrderButton from "@/components/OrderButton.vue"
 import InputText from "@/components/InputText.vue"
+import { keys } from "@/composables/keys"
 
 ref: isShow = false
 const close = () => {
@@ -39,8 +39,6 @@ const close = () => {
 const open = () => {
   isShow = true
 }
-
-const keys = ((_) => _)(inject("keys")) // suppress error in volar
 </script>
 
 <style scoped>
