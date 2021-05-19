@@ -2,16 +2,10 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "allowSyntheticDefaultImports": true,
-    "checkJs": true,
+    "strictNullChecks": false,
+    "checkJs": false,
     "strict": true,
-    "moduleResolution": "node",
-    "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ]
-    },
+    "moduleResolution": "node"
   },
   "include": [
     "./src/**/*"

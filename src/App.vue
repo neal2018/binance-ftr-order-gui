@@ -9,7 +9,8 @@
         <p>14.3242</p>
       </div>
       <p>{{ count }}</p>
-      <p>{{ priceRollingMean.toString().substring(0, 9) }}</p>
+      <p>{{ keys.apiPublicKey }}</p>
+      <p>{{ priceRollingMean.toString().slice(0, 9) }}</p>
     </div>
     <div class="max-w-xl mx-auto flex justify-around">
       <OrderButton msg="Long2" type="green" />
@@ -21,9 +22,10 @@
 </template>
 
 <script setup>
-import OrderButton from "./components/OrderButton.vue"
-import PriceShower from "./components/PriceShower.vue"
-import Setting from "./components/Setting.vue"
+import { provide } from "vue"
+import OrderButton from "@/components/OrderButton.vue"
+import PriceShower from "@/components/PriceShower.vue"
+import Setting from "@/components/Setting.vue"
 
 ref: price = "0"
 ref: priceRollingMean = 0
@@ -48,6 +50,12 @@ socket.addEventListener("message", (event) => {
     priceRollingMean -= rollingAlpha * (priceRollingMean - priceHalfSecond)
   }
 })
+
+ref: keys = {
+  apiPublicKey: "",
+  apiPrivateKey: "",
+}
+provide("keys", keys)
 </script>
 
 <style scoped></style>

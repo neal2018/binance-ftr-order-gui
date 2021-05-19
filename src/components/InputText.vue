@@ -20,15 +20,20 @@
     "
     type="text"
     :placeholder="msg"
+    :value="data"
+    @input="$emit('update:data', asAny($event.target).value)"
   />
 </template>
 
 <script setup>
 import { defineProps } from "vue"
 
-const props = defineProps({
+defineProps({
   msg: String,
+  data: String,
 })
+
+const asAny = (_) => _ // suppress error in volar
 </script>
 
 <style scoped></style>

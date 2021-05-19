@@ -17,8 +17,8 @@
   ></button>
   <div v-if="isShow" class="setbox fixed top-0 right-0 h-screen w-96 p-6 bg-gray-500 bg-opacity-75">
     <div class="flex-row justify-around content-center">
-      <InputText msg="api-public-key" />
-      <InputText msg="api-private-key" />
+      <InputText msg="api-public-key" v-model:data="keys.apiPublicKey" />
+      <InputText msg="api-private-key" v-model:data="keys.apiPrivateKey" />
     </div>
     <div class="flex justify-around absolute bottom-10 right-0 w-full px-5">
       <OrderButton class="m-5 w-40" msg="Confirm" type="green" @click="close" />
@@ -28,14 +28,10 @@
 </template>
 
 <script setup>
-import { defineProps } from "vue"
-import OrderButton from "./OrderButton.vue"
-import InputText from "./InputText.vue"
+import { inject } from "vue"
+import OrderButton from "@/components/OrderButton.vue"
+import InputText from "@/components/InputText.vue"
 
-const props = defineProps({
-  msg: String,
-  type: String,
-})
 ref: isShow = false
 const close = () => {
   isShow = false
@@ -43,6 +39,8 @@ const close = () => {
 const open = () => {
   isShow = true
 }
+
+const keys = ((_) => _)(inject("keys")) // suppress error in volar
 </script>
 
 <style scoped>
