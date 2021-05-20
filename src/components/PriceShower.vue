@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { defineProps, onBeforeUpdate } from "vue"
+import { defineProps, watch } from "vue"
 
 const props = defineProps({
   price: {
@@ -15,16 +15,17 @@ const props = defineProps({
 })
 
 ref: arrow = "↓"
-let oldPrice = props.price
 
-onBeforeUpdate(() => {
-  if (props.price.length > oldPrice.length || props.price > oldPrice) {
-    arrow = "↑"
-  } else {
-    arrow = "↓"
+watch(
+  () => props.price,
+  (price, prevPrice) => {
+    if (price.length > prevPrice.length || price > prevPrice) {
+      arrow = "↑"
+    } else {
+      arrow = "↓"
+    }
   }
-  oldPrice = props.price
-})
+)
 </script>
 
 <style scoped></style>

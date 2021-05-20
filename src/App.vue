@@ -18,6 +18,12 @@
       <OrderButton msg="Short1" type="red" />
       <OrderButton msg="Short2" type="red" />
     </div>
+    <div class="mx-auto flex justify-around">
+      <Select :msgs="contents" />
+      <Select :msgs="contents" />
+      <Select :msgs="contents" />
+      <Select :msgs="contents" />
+    </div>
   </div>
 </template>
 
@@ -25,8 +31,12 @@
 import OrderButton from "@/components/OrderButton.vue"
 import PriceShower from "@/components/PriceShower.vue"
 import Setting from "@/components/Setting.vue"
+import Select from "@/components/Select.vue"
 import { keys } from "@/composables/keys"
 import { price, count, priceRollingMean } from "@/composables/prices"
+
+ref: selected = "A regular sized select input"
+const contents = ["2", "5", "25", "50", "75", "100", "125"]
 </script>
 
 <style scoped></style>
