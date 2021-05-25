@@ -8,26 +8,28 @@ export const timestamp = ref(0)
 const rollingAlpha = 0.03
 
 const streamsCallback = {
-  "btcusdt@aggTrade": (data) => {
+  "btcusdt@aggTrade": (data: { T: number; p: string }) => {
     if (data.T - timestamp.value > 0) {
       price.value = data.p
       timestamp.value = data.T
       count.value++
     }
   },
-  "btcusdt@miniTicker": (data) => {
+  "btcusdt@miniTicker": (data: { c: string }) => {
     const priceHalfSecond = parseFloat(data.c)
     if (priceRollingMean.value === 0) {
       priceRollingMean.value = priceHalfSecond
     }
     priceRollingMean.value -= rollingAlpha * (priceRollingMean.value - priceHalfSecond)
-  },
+  }
 }
+
+type StreamType = keyof (typeof streamsCallback);
 
 const streamsQuery = Object.keys(streamsCallback).join("/")
 
 const socket = new WebSocket(`wss://fstream.binance.com/stream?streams=${streamsQuery}`)
 socket.addEventListener("message", (event) => {
-  const { stream, data } = JSON.parse(event.data)
+  const { stream, data }: { stream: StreamType, data: any } = JSON.parse(event.data)
   streamsCallback[stream](data)
 })

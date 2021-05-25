@@ -18,15 +18,15 @@
   </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps } from "vue"
 
 const props = defineProps({
   msg: String,
-  type: String,
+  color: String
 })
 
-const bgColor = props.type === "red" ? "bg-green-500" : "bg-red-500"
+const bgColor = props.color === "red" ? "bg-green-500" : "bg-red-500"
 </script>
 
 <style scoped></style>

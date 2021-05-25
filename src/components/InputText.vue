@@ -25,15 +25,15 @@
   />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps } from "vue"
 
 defineProps({
   msg: String,
-  data: String,
+  data: String
 })
 
-const asAny = (_) => _ // suppress error in volar
+const asAny = (_: any) => _ // suppress error in volar
 </script>
 
 <style scoped></style>

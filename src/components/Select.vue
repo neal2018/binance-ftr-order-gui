@@ -18,11 +18,12 @@
   </select>
 </template>
 
-<script setup>
-const props = defineProps({
-  msgs: Array,
-  type: String,
-})
+<script setup lang="ts">
+import { defineProps } from "vue"
+const props =
+  defineProps<{
+    msgs: string[]
+  }>()
 </script>
 
 <style scoped></style>

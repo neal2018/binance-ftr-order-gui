@@ -21,13 +21,13 @@
       <InputText msg="api-private-key" v-model:data="keys.apiPrivateKey" />
     </div>
     <div class="flex justify-around absolute bottom-10 right-0 w-full px-5">
-      <OrderButton class="m-5 w-40" msg="Confirm" type="green" @click="close" />
-      <OrderButton class="m-5 w-40" msg="Cancel" type="red" @click="close" />
+      <OrderButton class="m-5 w-40" msg="Confirm" color="green" @click="close" />
+      <OrderButton class="m-5 w-40" msg="Cancel" color="red" @click="close" />
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import OrderButton from "@/components/OrderButton.vue"
 import InputText from "@/components/InputText.vue"
 import { keys } from "@/composables/keys"

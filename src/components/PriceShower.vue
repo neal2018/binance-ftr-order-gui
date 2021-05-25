@@ -4,14 +4,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, watch } from "vue"
 
 const props = defineProps({
   price: {
     type: String,
-    default: "0",
-  },
+    default: "0"
+  }
 })
 
 ref: arrow = "↓"
