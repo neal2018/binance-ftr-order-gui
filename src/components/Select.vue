@@ -13,6 +13,8 @@
       cursor-pointer
       hover:bg-purple-700
     "
+    :value="data"
+    @input="$emit('update:data', asAny($event.target).value)"
   >
     <option v-for="msg in props.msgs" :key="msg" class="bg-gray-700">{{ msg }}</option>
   </select>
@@ -20,9 +22,11 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue"
+import { asAny } from "@/composables/shared"
 const props =
   defineProps<{
     msgs: string[]
+    data: string
   }>()
 </script>
 

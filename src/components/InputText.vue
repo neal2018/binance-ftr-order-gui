@@ -1,6 +1,7 @@
 <template>
   <input
     class="
+      font-mono
       flex-1
       my-4
       appearance-none
@@ -27,13 +28,11 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue"
-
+import { asAny } from "@/composables/shared"
 defineProps({
   msg: String,
   data: String
 })
-
-const asAny = (_: any) => _ // suppress error in volar
 </script>
 
 <style scoped></style>

@@ -1,0 +1,1 @@
+export const asAny = (_: any) => _ // suppress error in volar
