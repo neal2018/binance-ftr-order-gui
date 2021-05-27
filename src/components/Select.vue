@@ -1,17 +1,17 @@
 <template>
   <select
     class="
-      mx-4
-      py-3
-      px-4
       flex-grow
-      rounded-lg
-      appearance-none
-      focus:outline-none
-      bg-gray-700
+      mx-4
+      px-4
+      py-3
       text-white
-      cursor-pointer
+      bg-gray-700
       hover:bg-purple-700
+      rounded-lg
+      focus:outline-none
+      appearance-none
+      cursor-pointer
     "
     :value="data"
     @input="$emit('update:data', asAny($event.target).value)"

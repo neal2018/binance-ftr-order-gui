@@ -2,15 +2,15 @@
   <button
     class="
       my-10
-      py-4
       px-6
-      font-semibold
+      py-4
       text-gray-100
-      rounded-lg
-      shadow-md
-      focus:outline-none
-      hover:bg-purple-700
+      font-semibold
       active:bg-purple-600
+      hover:bg-purple-700
+      rounded-lg
+      focus:outline-none
+      shadow-md
     "
     :class="bgColor"
   >
