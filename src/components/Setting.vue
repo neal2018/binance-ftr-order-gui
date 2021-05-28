@@ -21,9 +21,9 @@
         <input class="text-input" type="text" placeholder="api-public-key" v-model="keys.apiPublicKey" />
         <input class="text-input" type="text" placeholder="api-private-key" v-model="keys.apiPrivateKey" />
       </div>
-      <div class="absolute bottom-10 right-0 flex justify-around px-5 w-full">
-        <OrderButton class="m-5 w-40" msg="Confirm" color="green" @click="close" />
-        <OrderButton class="m-5 w-40" msg="Cancel" color="red" @click="close" />
+      <div class="absolute sm:bottom-10 bottom-1/4 right-0 flex justify-around px-5 w-full">
+        <OrderButton class="sm:m-5 sm:w-40" msg="Confirm" color="green" @click="close" />
+        <OrderButton class="sm:m-5 sm:w-40" msg="Cancel" color="red" @click="close" />
       </div>
     </div>
   </div>
