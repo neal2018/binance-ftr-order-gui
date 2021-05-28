@@ -1,4 +1,5 @@
 <template>
+  <div class="bg fixed bg-gray-800 overflow-hidden"></div>
   <div class="contianer p-1 sm:p-10 min-h-screen bg-gray-800 bg-cover">
     <Setting />
     <div
@@ -74,5 +75,11 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .tiny-input {
   @apply relative focus:z-10 px-1 w-14 bg-gray-700 appearance-none;
+}
+.bg {
+  top: -50%;
+  width: 100%;
+  height: 200%;
+  z-index: -10;
 }
 </style>
