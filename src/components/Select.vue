@@ -2,9 +2,10 @@
   <select
     class="
       flex-grow
-      mx-4
-      px-4
-      py-3
+      mx-1
+      sm:mx-4
+      sm:px-4
+      sm:py-3
       text-white
       bg-gray-700
       hover:bg-purple-700

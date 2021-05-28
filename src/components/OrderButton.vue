@@ -1,9 +1,16 @@
 <template>
   <button
     class="
-      my-10
-      px-6
-      py-4
+      flex-grow
+      sm:flex-grow-0
+      m-1
+      p-1
+      my-1
+      sm:my-10
+      sm:px-6
+      sm:py-4
+      text-md
+      sm:text-base
       text-gray-100
       font-semibold
       active:bg-purple-600

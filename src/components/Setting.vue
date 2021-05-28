@@ -1,28 +1,30 @@
 <template>
-  <button
-    class="
-      circle
-      fixed
-      right-4
-      top-6
-      w-8
-      h-8
-      bg-gray-800
-      active:bg-purple-700
-      hover:bg-purple-800
-      rounded-full
-      focus:outline-none
-    "
-    @click="open"
-  ></button>
-  <div v-if="isShow" class="setbox fixed right-0 top-0 p-6 w-96 h-screen bg-gray-500 bg-opacity-75">
-    <div class="flex-row content-center justify-around">
-      <input class="text-input" type="text" placeholder="api-public-key" v-model="keys.apiPublicKey" />
-      <input class="text-input" type="text" placeholder="api-private-key" v-model="keys.apiPrivateKey" />
-    </div>
-    <div class="absolute bottom-10 right-0 flex justify-around px-5 w-full">
-      <OrderButton class="m-5 w-40" msg="Confirm" color="green" @click="close" />
-      <OrderButton class="m-5 w-40" msg="Cancel" color="red" @click="close" />
+  <div>
+    <button
+      class="
+        circle
+        fixed
+        right-4
+        top-6
+        w-8
+        h-8
+        bg-gray-800
+        active:bg-purple-700
+        hover:bg-purple-800
+        rounded-full
+        focus:outline-none
+      "
+      @click="open"
+    ></button>
+    <div v-if="isShow" class="z-10 setbox fixed right-0 top-0 p-6 w-5/12 sm:w-96 h-screen bg-gray-500 bg-opacity-75">
+      <div class="flex-row content-center justify-around">
+        <input class="text-input" type="text" placeholder="api-public-key" v-model="keys.apiPublicKey" />
+        <input class="text-input" type="text" placeholder="api-private-key" v-model="keys.apiPrivateKey" />
+      </div>
+      <div class="absolute bottom-10 right-0 flex justify-around px-5 w-full">
+        <OrderButton class="m-5 w-40" msg="Confirm" color="green" @click="close" />
+        <OrderButton class="m-5 w-40" msg="Cancel" color="red" @click="close" />
+      </div>
     </div>
   </div>
 </template>

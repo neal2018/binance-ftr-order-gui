@@ -1,11 +1,11 @@
 <template>
-  <div class="contianer p-10 min-h-screen bg-gray-800 bg-cover">
+  <div class="contianer p-1 sm:p-10 min-h-screen bg-gray-800 bg-cover">
     <Setting />
     <div
       class="mx-auto p-8 max-w-2xl text-center text-white font-mono bg-gray-700 rounded-xl shadow-md overflow-hidden"
     >
       <PriceShower :price="price" />
-      <div class="m-10">
+      <div class="m-2 sm:m-10">
         <p>priceMeanRolling: {{ priceMeanRolling.toFixed(4) }}</p>
         <p>priceMean30: {{ priceMean30.toFixed(4) }}</p>
         <p>priceSTD30: {{ priceSTD30.toFixed(4) }} ({{ ((priceSTD30 / priceMeanRolling) * 100).toFixed(4) }}%)</p>
@@ -20,7 +20,7 @@
       <p>noLossPrice: {{ noLossPrice.toFixed(4) }}</p>
     </div>
     <div class="flex justify-around mx-auto max-w-xl">
-      <OrderButton msg="Long2" color="green" />
+      <OrderButton msg="Long2" color="green" @click="a" />
       <OrderButton msg="Long1" color="green" />
       <OrderButton msg="Short1" color="red" />
       <OrderButton msg="Short2" color="red" />
@@ -42,6 +42,8 @@ import Select from "@/components/Select.vue"
 import { keys } from "@/composables/keys"
 import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/composables/prices"
 import { computed } from "vue"
+
+const a = () => alert("aaa")
 
 ref: leverageSelected = "125x"
 const leverageContents = ["2x", "5x", "25x", "50x", "75x", "100x", "125x"]
