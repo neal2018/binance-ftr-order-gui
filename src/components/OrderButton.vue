@@ -4,8 +4,8 @@
       flex-grow
       sm:flex-grow-0
       m-1
-      p-1
-      my-1
+      px-1
+      py-2
       sm:my-10
       sm:px-6
       sm:py-4

@@ -3,6 +3,7 @@
     <button
       class="
         circle
+        z-10
         fixed
         right-4
         top-6

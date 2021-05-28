@@ -2,7 +2,10 @@
   <select
     class="
       flex-grow
+      w-1
       mx-1
+      px-2
+      py-1
       sm:mx-4
       sm:px-4
       sm:py-3
