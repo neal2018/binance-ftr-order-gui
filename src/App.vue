@@ -83,7 +83,7 @@ const leverageShow = leverageOptions.reduce((map, e) => ((map[e + "x"] = e), map
 ref: leverageSelected = "125x"
 ref: leverage = computed(() => leverageShow[leverageSelected])
 
-const openPriceOptions = [0, 0.1, 0.2, 0.3, 0.5, 1, 2, 3, 5, 10]
+const openPriceOptions = [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 3, 5, 10]
 const openPriceShow = openPriceOptions.reduce(
   (map, e) => ((map[`p - ${e}*std30`] = e), map),
   {} as { [key: string]: number }
@@ -96,7 +96,7 @@ ref: noLossPriceDiff = computed(() => freeRate * 0.01 * openPrice)
 ref: tradingFee = computed(() => freeRate * leverage * orderUSDT * 0.01)
 ref: actualFeeRates = computed(() => freeRate * leverage)
 
-const downPriceOptions = [0, 0.1, 0.2, 0.3, 0.5, 1, 2, 3, 5, 10]
+const downPriceOptions = [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 3, 5, 10]
 const downPriceShow = downPriceOptions.reduce(
   (map, e) => ((map[`op - ${e}*std30`] = e), map),
   {} as { [key: string]: number }
@@ -105,7 +105,7 @@ ref: downPriceSelected = "op - 1*std30"
 ref: downPriceDiff = computed(() => -downPriceShow[downPriceSelected] * priceSTD30.value)
 ref: downPercent = computed(() => (downPriceDiff / openPrice) * leverage * 100)
 
-const upPriceOptions = [0, 0.1, 0.2, 0.3, 0.5, 1, 2, 3, 5, 10]
+const upPriceOptions = [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 3, 5, 10]
 const upPriceShow = upPriceOptions.reduce(
   (map, e) => ((map[`op + ${e}*std30`] = e), map),
   {} as { [key: string]: number }
