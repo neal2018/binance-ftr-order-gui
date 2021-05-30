@@ -2,23 +2,18 @@
   <button
     class="
       flex-grow
-      sm:flex-grow-0
       m-1
       px-1
       py-2
-      sm:my-10
-      sm:px-6
-      sm:py-4
-      text-md
-      sm:text-base
-      text-gray-100
+      text-md text-gray-100
       font-semibold
-      active:bg-purple-600
-      hover:bg-purple-700
       rounded-lg
-      focus:outline-none
       shadow-md
+      hover:bg-purple-700
+      focus:outline-none
     "
+    sm="flex-grow-0 px-6 py-4 my-10 text-base"
+    active="bg-purple-600"
     :class="bgColor"
   >
     {{ msg }}

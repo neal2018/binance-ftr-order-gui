@@ -1,7 +1,7 @@
 <template>
-  <div class="bg fixed bg-gray-800 overflow-hidden"></div>
+  <div class="fixed bg-gray-800 overflow-hidden -z-10 w-2/1 h-2/1 -top-1/2"></div>
   <Setting />
-  <MessageContenter/>
+  <MessageContenter />
   <div class="contianer p-1 sm:p-10 min-h-screen bg-gray-800 bg-cover">
     <div
       class="mx-auto p-8 max-w-2xl text-center text-white font-mono bg-gray-700 rounded-xl shadow-md overflow-hidden"
@@ -73,6 +73,9 @@ import MessageContenter from "@/components/MessageContenter.vue"
 import { keys } from "@/composables/keys"
 import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/composables/prices"
 import { computed } from "vue"
+import { createToast } from "@/composables/createToast"
+// import { createToast } from "mosha-vue-toastify"
+// import "mosha-vue-toastify/dist/style.css"
 
 ref: freeRate = 0.036
 ref: orderAmount = 0.01 // btc
@@ -121,11 +124,5 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .tiny-input {
   @apply relative focus:z-10 px-1 w-16 bg-gray-700 appearance-none;
-}
-.bg {
-  top: -50%;
-  width: 100%;
-  height: 200%;
-  z-index: -10;
 }
 </style>

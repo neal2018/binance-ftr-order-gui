@@ -6,21 +6,20 @@
       mx-1
       px-2
       py-1
-      sm:mx-4
-      sm:px-4
-      sm:py-3
       text-white
       bg-gray-700
       hover:bg-purple-700
-      rounded-lg
       focus:outline-none
+      rounded-lg
       appearance-none
       cursor-pointer
     "
+    active="bg-purple-600"
+    sm="mx-4 px-4 py-3"
     :value="data"
     @input="$emit('update:data', asAny($event.target).value)"
   >
-    <option v-for="msg in props.msgs" :key="msg" class="bg-gray-700">{{ msg }}</option>
+    <option v-for="msg in props.msgs" :key="msg" class="bg-gray-700 m-100">{{ msg }}</option>
   </select>
 </template>
 

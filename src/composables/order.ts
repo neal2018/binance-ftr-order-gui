@@ -3,7 +3,7 @@ import { keys } from "./keys"
 const BASE = "https://fapi.binance.com"
 
 const info = {
-  offsetTime: 37000 // arbitrary initial number, can be adjusted in adjustOffsetTime
+  offsetTime: 37000 // arbitrary initial number, will be adjusted in adjustOffsetTime
 }
 
 enum RequestMethod {

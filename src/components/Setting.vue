@@ -1,20 +1,8 @@
 <template>
   <div>
     <button
-      class="
-        circle
-        z-10
-        fixed
-        right-4
-        top-6
-        w-8
-        h-8
-        bg-gray-800
-        active:bg-purple-700
-        hover:bg-purple-800
-        rounded-full
-        focus:outline-none
-      "
+      class="circle z-10 fixed right-4 top-6 w-8 h-8 bg-gray-800 rounded-full hover:bg-purple-800 focus:outline-none"
+      active="bg-purple-700"
       @click="open"
     ></button>
     <div v-if="isShow" class="z-10 setbox fixed right-0 top-0 p-6 w-5/12 sm:w-96 h-screen bg-gray-500 bg-opacity-75">
