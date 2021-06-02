@@ -4,7 +4,8 @@
       <transition-group
         name="bounce"
         tag="div"
-        class="flex flex-col justify-start items-end fixed right-0 top-0 p-4 z-10"
+        class="flex flex-col justify-start items-end fixed right-0 top-0 p-4 z-10 <sm:w-1/2"
+        @leave="leave"
       >
         <MessageToast v-for="props in toastsList" v-bind="props" :key="props.id" />
       </transition-group>
@@ -15,11 +16,18 @@
 <script setup lang="ts">
 import MessageToast from "@/components/MessageToast.vue"
 import { toastsList } from "@/composables/createToast"
+let leave = (el: Element) => {
+  let HTMLel = el as HTMLDivElement // type assertion
+  // move to same place but out of document flow
+  let top = HTMLel.getBoundingClientRect().top + window.scrollY - 9 // FIXME: magic number 9
+  HTMLel.style.position = "absolute"
+  HTMLel.style.top = `${top}px`
+}
 </script>
 
 <style scoped lang="postcss">
 .bounce-move {
-  transition: 2s ease;
+  transition: all 0.5s linear;
 }
 .bounce-enter-active {
   animation: bounceIn 0.7s;
@@ -30,10 +38,10 @@ import { toastsList } from "@/composables/createToast"
 }
 
 @keyframes bounceIn {
+  from,
   60%,
   75%,
   90%,
-  from,
   to {
     animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
@@ -60,17 +68,10 @@ import { toastsList } from "@/composables/createToast"
   20% {
     opacity: 1;
     transform: translate3d(50px, 0, 0);
-    position: relative;
-  }
-  90% {
-    opacity: 0;
-    transform: translate3d(500px, 0, 0);
-    position: relative;
   }
   to {
     opacity: 0;
-    transform: translate3d(200px, 0, 0);
-    position: absolute;
+    transform: translate3d(500px, 0, 0);
   }
 }
 </style>

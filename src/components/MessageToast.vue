@@ -1,45 +1,22 @@
 <template>
   <div
-    class="
-      bg-light-200
-      m-2
-      relative
-      flex
-      justify-between
-      min-h-16
-      box-border
-      overflow-hidden
-      py-3
-      px-2
-      min-w-[19.5rem]
-      max-w-[30rem]
-      w-max
-      break-words
-      rounded-lg
-      select-none
-    "
+    class="m-2 relative flex justify-between min-h-16 overflow-hidden py-3 px-2 w-full sm:w-72 rounded-lg select-none"
+    :class="props.messageType"
     @mouseenter="pauseTimer"
     @mouseleave="startTimer"
     @mousedown="startSwipe"
-    :style="{ right: `${swipedDiff}px`, transition: isSwiping ? 'none' : 'right 0.3s ease-out' }"
+    :style="{ right: `${swipedDiff}px`, transition: isSwiping ? 'none' : 'transition: all .5s linear' }"
   >
-    <div class="flex items-center">
-      <div class="font-sans leading-5 flex flex-col text-cool-gray-600">
-        <div class="mb-1 text-base font-bold">{{ text }}</div>
-        <div v-if="description && description.length > 0" class="text-sm font-normal">{{ description }}</div>
-      </div>
+    <div class="flex flex-col mx-1">
+      <div class="text-base font-bold text-gray-700">{{ text }}</div>
+      <div v-if="description && description.length > 0" class="text-sm m-1">{{ description }}</div>
     </div>
     <div class="group cursor-pointer" @click="onCloseHandler">
       <p
         class="
-          text-2xl
-          font-normal
-          relative
-          ml-2.5
-          text-gray-700
+          text-2xl text-gray-700
           transition-all
-          duration-200
-          shadow-2xl
+          duration-70
           group-hover:text-red-500 group-hover:text-4xl group-hover:font-extrabold
         "
       >
@@ -57,9 +34,9 @@
         duration-200
         ease-linear
         bg-gradient-to-r
-        from-teal-300
+        from-teal-100
         via-pink-100
-        to-indigo-400
+        to-purple-300
       "
       :style="{ width: `${progress}%` }"
     ></div>
@@ -71,6 +48,7 @@ import { defineProps, onMounted, watch } from "vue"
 import type { PropType } from "vue"
 import { useTimer } from "@/composables/useTimer"
 import { useSwipe } from "@/composables/useSwipe"
+import { MessageType } from "@/composables/types"
 
 const props = defineProps({
   text: String,
@@ -82,6 +60,10 @@ const props = defineProps({
   timeout: {
     type: Number,
     default: 10000
+  },
+  messageType: {
+    type: String as PropType<MessageType>,
+    default: MessageType.INFO
   }
 })
 
@@ -95,7 +77,7 @@ onMounted(() => {
 // swiper
 const { swipedDiff, isSwiping, startSwipe, endSwipe } = useSwipe()
 
-const SWIPE_ACTIVE_DIFF = 100
+const SWIPE_ACTIVE_DIFF = 200
 watch(swipedDiff, () => {
   if (Math.abs(swipedDiff.value) > SWIPE_ACTIVE_DIFF) {
     endSwipe()
@@ -104,4 +86,16 @@ watch(swipedDiff, () => {
 })
 </script>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+.INFO {
+  @apply bg-light-700;
+}
+
+.OK {
+  @apply bg-green-100;
+}
+
+.ERR {
+  @apply bg-red-200;
+}
+</style>
