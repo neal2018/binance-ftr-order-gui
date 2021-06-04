@@ -12,32 +12,13 @@
       <div v-if="description && description.length > 0" class="text-sm m-1">{{ description }}</div>
     </div>
     <div class="group cursor-pointer" @click="onCloseHandler">
-      <p
-        class="
-          text-2xl text-gray-700
-          transition-all
-          duration-70
-          group-hover:text-red-500 group-hover:text-4xl group-hover:font-extrabold
-        "
-      >
+      <p class="text-2xl text-gray-700 transition-all duration-70" group-hover="text-red-500 text-4xl font-extrabold">
         ×
       </p>
     </div>
     <div
-      class="
-        absolute
-        h-3.5
-        -bottom-2
-        -ml-2
-        rounded
-        transition-all
-        duration-200
-        ease-linear
-        bg-gradient-to-r
-        from-teal-100
-        via-pink-100
-        to-purple-300
-      "
+      class="absolute h-3.5 -bottom-2 -ml-2 rounded transition-all duration-200 ease-linear w-"
+      gradient="to-r from-teal-100 via-pink-100 to-purple-300"
       :style="{ width: `${progress}%` }"
     ></div>
   </div>
@@ -90,11 +71,9 @@ watch(swipedDiff, () => {
 .INFO {
   @apply bg-light-700;
 }
-
 .OK {
   @apply bg-green-100;
 }
-
 .ERR {
   @apply bg-red-200;
 }

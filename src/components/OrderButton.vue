@@ -1,20 +1,9 @@
 <template>
   <button
-    class="
-      flex-grow
-      m-1
-      px-1
-      py-2
-      text-md text-gray-100
-      font-semibold
-      rounded-lg
-      shadow-md
-      hover:bg-purple-700
-      focus:outline-none
-    "
+    class="flex-grow m-1 px-1 py-2 text-md text-gray-100 font-semibold rounded-lg shadow-md"
     sm="flex-grow-0 px-6 py-4 my-10 text-base"
-    active="bg-purple-600"
-    :class="bgColor"
+    bg="hover:purple-700 active:purple-600"
+    :class="props.color === 'red' ? 'bg-red-500' : 'bg-green-500'"
   >
     {{ msg }}
   </button>
@@ -27,8 +16,6 @@ const props = defineProps({
   msg: String,
   color: String
 })
-
-const bgColor = props.color === "red" ? "bg-green-500" : "bg-red-500"
 </script>
 
 <style scoped></style>

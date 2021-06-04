@@ -1,20 +1,7 @@
 <template>
   <select
-    class="
-      flex-grow
-      w-1
-      mx-1
-      px-2
-      py-1
-      text-white
-      bg-gray-700
-      hover:bg-purple-700
-      focus:outline-none
-      rounded-lg
-      appearance-none
-      cursor-pointer
-    "
-    active="bg-purple-600"
+    class="flex-grow w-1 mx-1 px-2 py-1 text-white rounded-lg appearance-none cursor-pointer"
+    bg="gray-700 hover:purple-700 active:purple-600"
     sm="mx-4 px-4 py-3"
     :value="data"
     @input="$emit('update:data', asAny($event.target).value)"

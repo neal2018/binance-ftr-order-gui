@@ -1,11 +1,11 @@
 <template>
   <div>
     <button
-      class="circle z-10 fixed right-4 top-6 w-8 h-8 bg-gray-800 rounded-full hover:bg-purple-800 focus:outline-none"
-      active="bg-purple-700"
+      class="circle z-10 absolute right-4 top-6 w-8 h-8 rounded-full transition-all duration-500"
+      bg="gray-800 hover:purple-800 active:purple-700"
       @click="open"
     ></button>
-    <div v-if="isShow" class="z-10 setbox fixed right-0 top-0 p-6 w-5/12 sm:w-96 h-screen bg-gray-500 bg-opacity-75">
+    <div v-if="isShow" class="z-10 setbox absolute right-0 top-0 p-6 w-5/12 sm:w-96 h-screen bg-gray-500 bg-opacity-75">
       <div class="flex-row content-center justify-around">
         <input class="text-input" type="text" placeholder="api-public-key" v-model="keys.apiPublicKey" />
         <input class="text-input" type="text" placeholder="api-private-key" v-model="keys.apiPrivateKey" />
@@ -33,13 +33,12 @@ const open = () => {
 
 <style scoped lang="postcss">
 .circle {
-  box-shadow: inset 0 0 0.25rem 0.4rem #374151;
+  box-shadow: 0 0 0.25rem 0.4rem rgba(0, 0, 0, 0), inset 0 0 0.25rem 0.4rem #374151;
 }
 .circle:hover {
   box-shadow: 0 0 0.25rem 0.4rem #4c1d95, inset 0 0 0.5rem 0.1rem #4c1d95;
-}
-.circle:hover {
-  box-shadow: 0 0 0.25rem 0.4rem #4c1d95, inset 0 0 0.5rem 0.1rem #4c1d95;
+  transform: scale(1.2);
+  outline: none;
 }
 .text-input {
   @apply placeholder-gray-400
@@ -53,11 +52,12 @@ const open = () => {
       text-base
       bg-white
       border border-transparent
-      focus:border-transparent
       rounded-lg
-      focus:outline-none
       shadow-md
       appearance-none
-      focus:ring-purple-600 focus:ring-2;
+      focus:border-transparent
+      focus:outline-none
+      focus:ring-purple-600
+      focus:ring-2;
 }
 </style>
