@@ -1,77 +1,11 @@
-import { keys } from "./keys"
+import { keys } from "@/data/keys"
+import { RequestMethod, Side, OrderType, TimeInForce, NewOrderRespType } from "@/composables/types"
+import type { TradeOrderBody } from "@/composables/types"
 
 const BASE = "https://fapi.binance.com"
 
 const info = {
   offsetTime: 37000 // arbitrary initial number, will be adjusted in adjustOffsetTime
-}
-
-enum RequestMethod {
-  GET = "GET",
-  POST = "POST"
-}
-
-enum Side {
-  SELL = "SELL",
-  BUY = "BUY"
-}
-
-enum PositionSide {
-  BOTH = "BOTH",
-  LONG = "LONG",
-  SHORT = "SHORT"
-}
-
-enum StringBoolean {
-  TRUE = "TRUE",
-  FALSE = "FALSE"
-}
-
-enum WorkingType {
-  CONTRACT_PRICE = "CONTRACT_PRICE",
-  MARK_PRICE = "MARK_PRICE"
-}
-
-enum NewOrderRespType {
-  ACK = "ACK",
-  RESULT = "RESULT"
-}
-
-enum OrderType {
-  LIMIT = "LIMIT",
-  MARKET = "MARKET",
-  STOP = "STOP",
-  TAKE_PROFIT = "TAKE_PROFIT",
-  STOP_MARKET = "STOP_MARKET",
-  TAKE_PROFIT_MARKET = "TAKE_PROFIT_MARKET",
-  TRAILING_STOP_MARKET = "TRAILING_STOP_MARKET"
-}
-
-enum TimeInForce {
-  GTC = "GTC",
-  IOC = "IOC",
-  FOK = "FOK",
-  GTX = "GTX"
-}
-
-interface TradeOrderBody {
-  symbol: string
-  side: Side
-  positionSide?: PositionSide
-  type: OrderType
-  quantity: number
-  price?: number
-  newClientOrderId?: string
-  stopPrice?: number
-  closePosition?: StringBoolean
-  activationPrice?: number
-  callbackRate?: number
-  timeInForce?: string
-  workingType?: WorkingType
-  priceProtect?: StringBoolean
-  newOrderRespType?: NewOrderRespType
-  recvWindow?: number
-  timestamp: number
 }
 
 const getTimestamp = () => new Date().getTime() + info.offsetTime
@@ -133,7 +67,7 @@ const asyncCall = async (
   }
 }
 
-const testOrder = async (symbol: string, side: Side, orderType: OrderType, quantity: number, price: number) => {
+export const postOrder = async (symbol: string, side: Side, orderType: OrderType, quantity: number, price: number) => {
   const url = BASE + "/fapi/v1/order/test"
   const postBody: TradeOrderBody = {
     symbol: symbol,
@@ -179,4 +113,4 @@ export const positionSide = async () => {
 
 adjustOffsetTime()
 
-testOrder("BTCUSDT", Side.BUY, OrderType.LIMIT, 0.001, 35000)
+// postOrder("BTCUSDT", Side.BUY, OrderType.LIMIT, 0.001, 35000)
