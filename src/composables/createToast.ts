@@ -1,21 +1,25 @@
-import { ref } from "vue"
 // modified from https://github.com/szboynono/mosha-vue-toastify/blob/main/lib/components/createToast.ts
+import { ref } from "vue"
+import { MessageType } from "@/composables/types"
 
 let toastId = 0
 
 export const toastsList = ref<Array<any>>([])
 
-export const createToast = (content: string | { title: string; description: string }, options: object = {}): void => {
-  const text = typeof content === "string" ? content : content.title
-  const description = typeof content === "string" ? "" : content.description
+export const createToast = (title: string, description = "", options: object = {}) => {
   let id = toastId++
   toastsList.value.push({
-    ...options,
-    text,
+    title,
     description,
     id,
-    onCloseHandler: () => removeToast(id)
+    onCloseHandler: () => removeToast(id),
+    ...options
   })
+  return id
+}
+
+export const createToastWithType = (title: string, description: string, messageType: MessageType) => {
+  createToast(title, description, { messageType })
 }
 
 const removeToast = (id: number) => {

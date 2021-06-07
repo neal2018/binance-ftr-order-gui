@@ -11,7 +11,7 @@
         <input class="text-input" type="text" placeholder="api-private-key" v-model="keys.apiPrivateKey" />
       </div>
       <div class="absolute sm:bottom-10 bottom-1/4 right-0 flex justify-around px-5 w-full">
-        <OrderButton class="sm:m-5 sm:w-40" msg="Confirm" color="green" @click="close" />
+        <OrderButton class="sm:m-5 sm:w-40" msg="Confirm" color="green" @click="confirm" />
         <OrderButton class="sm:m-5 sm:w-40" msg="Cancel" color="red" @click="close" />
       </div>
     </div>
@@ -21,13 +21,18 @@
 <script setup lang="ts">
 import OrderButton from "@/components/OrderButton.vue"
 import { keys } from "@/data/keys"
+import { receiveSignal } from "@/data/tradeInfo"
 
 ref: isShow = false
+const open = () => {
+  isShow = true
+}
 const close = () => {
   isShow = false
 }
-const open = () => {
-  isShow = true
+const confirm = () => {
+  receiveSignal()
+  close()
 }
 </script>
 

@@ -1,5 +1,5 @@
-import { onMounted, onUnmounted, ref } from "vue"
 // modified from https://github.com/szboynono/mosha-vue-toastify/blob/main/lib/hooks/useSwipe.ts
+import { onMounted, onUnmounted, ref } from "vue"
 
 export const useSwipe = () => {
   let swipeStart = 0

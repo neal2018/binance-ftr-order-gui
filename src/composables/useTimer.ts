@@ -1,5 +1,5 @@
-import { ref, computed, onUnmounted } from "vue"
 // modified from https://github.com/szboynono/mosha-vue-toastify/blob/main/lib/hooks/useTimer.ts
+import { ref, computed, onUnmounted } from "vue"
 
 const TRANSITION_TIME = 100
 

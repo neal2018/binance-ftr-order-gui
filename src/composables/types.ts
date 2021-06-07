@@ -6,7 +6,8 @@ export enum MessageType {
 
 export enum RequestMethod {
   GET = "GET",
-  POST = "POST"
+  POST = "POST",
+  DELETE = "DELETE"
 }
 
 export enum Side {
@@ -43,6 +44,24 @@ export enum OrderType {
   STOP_MARKET = "STOP_MARKET",
   TAKE_PROFIT_MARKET = "TAKE_PROFIT_MARKET",
   TRAILING_STOP_MARKET = "TRAILING_STOP_MARKET"
+}
+
+export enum OrderStatus {
+  NEW = "NEW",
+  PARTIALLY_FILLE = "PARTIALLY_FILLED",
+  FILLED = "FILLED",
+  CANCELED = "CANCELED",
+  EXPIRED = "EXPIRED",
+  NEW_INSURANCE = "NEW_INSURANCE",
+  NEW_ADL = "NEW_ADL"
+}
+
+export enum OrderEventType {
+  NEW = "NEW",
+  CANCELED = "CANCELED",
+  CALCULATED = "CALCULATED",
+  EXPIRED = "EXPIRED",
+  TRADE = "TRADE"
 }
 
 export enum TimeInForce {

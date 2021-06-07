@@ -1,4 +1,5 @@
 import { ref, computed, reactive } from "vue"
+import { exampleRespondForAggTrade, exampleRespondForMiniTicker } from "@/data/exampleResponds"
 
 export const price = ref("0")
 export const priceMeanRolling = ref(0)
@@ -11,19 +12,19 @@ let indexPricesList30 = 0
 
 export const priceMean30 = computed(() => pricesList30.reduce((a, b) => a + b) / pricesList30.length)
 
-export const priceSTD30 = computed(() =>
-  (pricesList30.reduce((a, b) => a + (b - priceMean30.value) ** 2) / pricesList30.length) ** 0.5
+export const priceSTD30 = computed(
+  () => (pricesList30.reduce((a, b) => a + (b - priceMean30.value) ** 2) / pricesList30.length) ** 0.5
 )
 
 const streamsCallback = {
-  "btcusdt@aggTrade": (data: { T: number; p: string }) => {
+  "btcusdt@aggTrade": (data: typeof exampleRespondForAggTrade) => {
     if (data.T - timestamp.value > 0) {
       price.value = data.p
       timestamp.value = data.T
       count.value++
     }
   },
-  "btcusdt@miniTicker": (data: { c: string }) => {
+  "btcusdt@miniTicker": (data: typeof exampleRespondForMiniTicker) => {
     const priceHalfSecond = parseFloat(data.c)
     if (priceMeanRolling.value === 0) {
       priceMeanRolling.value = priceHalfSecond
@@ -34,12 +35,12 @@ const streamsCallback = {
   }
 }
 
-type StreamType = keyof (typeof streamsCallback);
+type StreamType = keyof typeof streamsCallback
 
 const streamsQuery = Object.keys(streamsCallback).join("/")
 
 const socket = new WebSocket(`wss://fstream.binance.com/stream?streams=${streamsQuery}`)
 socket.addEventListener("message", (event) => {
-  const { stream, data }: { stream: StreamType, data: any } = JSON.parse(event.data)
+  const { stream, data }: { stream: StreamType; data: any } = JSON.parse(event.data)
   streamsCallback[stream](data)
 })

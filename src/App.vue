@@ -53,11 +53,7 @@
         <p>leveredFee: {{ tradingFee.toFixed(4) }} ({{ actualFeeRates.toFixed(4) }}%)</p>
       </div>
       <div class="flex justify-around mx-auto max-w-xl">
-        <OrderButton
-          msg="Long2"
-          color="green"
-          @click="createToast({ title: 'ORDER MADE', description: '0.01 BTC at 57200.00 USDT' })"
-        />
+        <OrderButton msg="Long2" color="green" @click="click" />
         <OrderButton msg="Long1" color="green" />
         <OrderButton msg="Short1" color="red" />
         <OrderButton msg="Short2" color="red" />
@@ -81,8 +77,17 @@ import MessageContenter from "@/components/MessageContenter.vue"
 import MouseCheckWrapper from "@/components/MouseCheckWrapper.vue"
 import { keys } from "@/data/keys"
 import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/data/prices"
-import { computed } from "vue"
-import { createToast } from "@/composables/createToast"
+import { computed, watch } from "vue"
+import { postLeverageWithToast } from "@/composables/restfulAPI"
+import { postOrderWithToast } from "@/composables/postOrder"
+import { Side, OrderType } from "@/composables/types"
+import type { TradeOrderBody } from "@/composables/types"
+
+ref: symbol = "BTCUSDT"
+
+const click = () => {
+  postOrderWithToast("BTCUSDT", Side.BUY, OrderType.LIMIT, 0.001, 34500.11)
+}
 
 ref: freeRate = 0.036
 ref: orderAmount = 0.01 // btc
@@ -91,7 +96,9 @@ ref: floatPrice = computed(() => parseFloat(price.value))
 const leverageOptions = [1, 2, 5, 25, 50, 75, 100, 125]
 const leverageShow = leverageOptions.reduce((map, e) => ((map[e + "x"] = e), map), {} as { [key: string]: number })
 ref: leverageSelected = Object.keys(leverageShow)[Object.keys(leverageShow).length - 1]
-ref: leverage = computed(() => leverageShow[leverageSelected])
+const leverage = computed(() => leverageShow[leverageSelected])
+
+watch(leverage, () => postLeverageWithToast(symbol, leverage.value))
 
 const STDMultiplierOptions = [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 3, 5, 10]
 const openPriceShow = STDMultiplierOptions.reduce(
@@ -99,28 +106,28 @@ const openPriceShow = STDMultiplierOptions.reduce(
   {} as { [key: string]: number }
 )
 ref: openPriceSelected = Object.keys(openPriceShow)[5]
-ref: openPrice = computed(() => floatPrice - openPriceShow[openPriceSelected] * priceSTD30.value)
+const openPrice = computed(() => floatPrice - openPriceShow[openPriceSelected] * priceSTD30.value)
 
-ref: orderUSDT = computed(() => openPrice * orderAmount)
-ref: noLossPriceDiff = computed(() => freeRate * 0.01 * openPrice)
-ref: tradingFee = computed(() => freeRate * leverage * orderUSDT * 0.01)
-ref: actualFeeRates = computed(() => freeRate * leverage)
+const orderUSDT = computed(() => openPrice.value * orderAmount)
+const noLossPriceDiff = computed(() => freeRate * 0.01 * openPrice.value)
+const tradingFee = computed(() => freeRate * leverage.value * orderUSDT.value * 0.01)
+const actualFeeRates = computed(() => freeRate * leverage.value)
 
 const downPriceShow = STDMultiplierOptions.reduce(
   (map, e) => ((map[`op - ${e}*std30`] = e), map),
   {} as { [key: string]: number }
 )
 ref: downPriceSelected = Object.keys(downPriceShow)[5]
-ref: downPriceDiff = computed(() => -downPriceShow[downPriceSelected] * priceSTD30.value)
-ref: downPercent = computed(() => (downPriceDiff / openPrice) * leverage * 100)
+const downPriceDiff = computed(() => -downPriceShow[downPriceSelected] * priceSTD30.value)
+const downPercent = computed(() => (downPriceDiff.value / openPrice.value) * leverage.value * 100)
 
 const upPriceShow = STDMultiplierOptions.reduce(
   (map, e) => ((map[`op + ${e}*std30`] = e), map),
   {} as { [key: string]: number }
 )
 ref: upPriceSelected = Object.keys(upPriceShow)[5]
-ref: upPriceDiff = computed(() => upPriceShow[upPriceSelected] * priceSTD30.value)
-ref: upPercent = computed(() => (upPriceDiff / openPrice) * leverage * 100)
+const upPriceDiff = computed(() => upPriceShow[upPriceSelected] * priceSTD30.value)
+const upPercent = computed(() => (upPriceDiff.value / openPrice.value) * leverage.value * 100)
 </script>
 
 <style scoped lang="postcss">

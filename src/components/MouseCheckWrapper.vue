@@ -21,7 +21,7 @@ import { ref } from "vue"
 const isUsingMouse = ref(false)
 </script>
 
-<style scoped>
+<style>
 .using-mouse button:focus,
 .using-mouse select:focus {
   outline: none;
