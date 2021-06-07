@@ -1,5 +1,5 @@
 <template>
-  <div :class="isUsingMouse ? 'using-mouse' : 'using-keyborad'">
+  <MouseCheckWrapper>
     <div class="fixed bg-gray-800 overflow-hidden -z-10 w-2/1 h-2/1 -top-1/2"></div>
     <Setting />
     <MessageContenter />
@@ -69,7 +69,7 @@
         <Select :msgs="Object.keys(upPriceShow)" v-model:data="upPriceSelected" />
       </div>
     </div>
-  </div>
+  </MouseCheckWrapper>
 </template>
 
 <script setup lang="ts">
@@ -78,11 +78,11 @@ import PriceShower from "@/components/PriceShower.vue"
 import Setting from "@/components/Setting.vue"
 import Select from "@/components/Select.vue"
 import MessageContenter from "@/components/MessageContenter.vue"
+import MouseCheckWrapper from "@/components/MouseCheckWrapper.vue"
 import { keys } from "@/composables/keys"
 import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/composables/prices"
 import { computed } from "vue"
 import { createToast } from "@/composables/createToast"
-import { isUsingMouse } from "@/composables/useMouseCheck"
 
 ref: freeRate = 0.036
 ref: orderAmount = 0.01 // btc
@@ -123,12 +123,6 @@ ref: upPriceDiff = computed(() => upPriceShow[upPriceSelected] * priceSTD30.valu
 ref: upPercent = computed(() => (upPriceDiff / openPrice) * leverage * 100)
 </script>
 
-<style>
-.using-mouse button:focus,
-.using-mouse select:focus {
-  outline: none;
-}
-</style>
 <style scoped lang="postcss">
 input[type="number"]::-webkit-inner-spin-button {
   appearance: none;
