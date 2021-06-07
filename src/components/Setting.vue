@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import OrderButton from "@/components/OrderButton.vue"
-import { keys } from "@/composables/keys"
+import { keys } from "@/data/keys"
 
 ref: isShow = false
 const close = () => {
