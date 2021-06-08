@@ -8,7 +8,7 @@
     :style="{ right: `${swipedDiff}px`, transition: isSwiping ? 'none' : 'transition: all .5s linear' }"
   >
     <div class="flex flex-col mx-1">
-      <div class="text-base font-bold text-gray-700">{{ text }}</div>
+      <div class="text-base font-bold text-gray-700">{{ title }}</div>
       <div v-if="description && description.length > 0" class="text-sm m-1">{{ description }}</div>
     </div>
     <div class="group cursor-pointer" @click="onCloseHandler">
@@ -32,7 +32,7 @@ import { useSwipe } from "@/composables/useSwipe"
 import { MessageType } from "@/composables/types"
 
 const props = defineProps({
-  text: String,
+  title: String,
   description: String,
   onCloseHandler: {
     type: Function as PropType<() => void>,
@@ -40,7 +40,7 @@ const props = defineProps({
   },
   timeout: {
     type: Number,
-    default: 10000
+    default: 1000000
   },
   messageType: {
     type: String as PropType<MessageType>,

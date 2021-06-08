@@ -86,7 +86,7 @@ import type { TradeOrderBody } from "@/composables/types"
 ref: symbol = "BTCUSDT"
 
 const click = () => {
-  postOrderWithToast("BTCUSDT", Side.BUY, OrderType.LIMIT, 0.001, 34500.11)
+  postOrderWithToast("BTCUSDT", Side.BUY, OrderType.LIMIT, 0.001, 30500.11)
 }
 
 ref: freeRate = 0.036
