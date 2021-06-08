@@ -70,6 +70,8 @@ export const asyncCall = async (
   }
 }
 
+// type Parameters<T> = T extends (...args: infer T) => any ? T : never
+// type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
 export const createToastWrapper = (f: Function, title: string, description = "", messageType = MessageType.INFO) => {
   return async (...args: any[]) => {
     createToastWithType(title, description, messageType)
@@ -95,7 +97,7 @@ export const adjustOffsetTime = async () => {
   })
 }
 
-await adjustOffsetTime()
+adjustOffsetTime()
 
 const getExchangeInfo = async () => {
   const url = BASE + "/fapi/v1/exchangeInfo"
