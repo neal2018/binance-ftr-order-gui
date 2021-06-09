@@ -5,13 +5,13 @@
     bg="hover:purple-700 active:purple-600"
     :class="props.color === 'red' ? 'bg-red-500' : 'bg-green-500'"
   >
-    {{ msg }}
+    {{ msg }} <slot></slot>
   </button>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from "vue"
-
+// TODO: remove padding & margin
 const props = defineProps({
   msg: String,
   color: String

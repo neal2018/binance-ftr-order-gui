@@ -1,15 +1,15 @@
 import { keys } from "@/data/keys"
-import { RequestMethod, MessageType } from "@/composables/types"
-import { createToast, createToastWithType } from "@/composables/createToast"
-import { ref } from "vue"
+import { RequestMethod, MessageType, Side, OrderType, TimeInForce, NewOrderRespType } from "@/composables/types"
+import { TradeOrderBody } from "@/composables/types"
+import { createToastWithType } from "@/composables/createToast"
 
-export const BASE = "https://fapi.binance.com"
+const BASE = "https://fapi.binance.com"
 
 const info = {
-  offsetTime: 37000 // arbitrary initial number, will be adjusted in adjustOffsetTime
+  offsetTime: 37000 // initial number, will be adjusted in adjustOffsetTime
 }
 
-export const getTimestamp = () => new Date().getTime() + info.offsetTime
+const getTimestamp = () => new Date().getTime() + info.offsetTime
 
 // https://stackoverflow.com/questions/47329132/how-to-get-hmac-with-crypto-web-api/
 const signHMACSHA256 = async (key: string, data: string) => {
@@ -24,7 +24,6 @@ const signHMACSHA256 = async (key: string, data: string) => {
     false,
     ["sign", "verify"]
   )
-
   let rawSignature = await window.crypto.subtle.sign("HMAC", encodedKey, UTFencoder.encode(data))
   let b = new Uint8Array(rawSignature)
   return Array.prototype.map.call(b, (x) => ("00" + x.toString(16)).slice(-2)).join("")
@@ -41,7 +40,7 @@ const makeQueryString = (obj: { [key: string]: any }) => {
   return str
 }
 
-export const asyncCall = async (
+const asyncCall = async (
   methodType: RequestMethod,
   url: string,
   params = {},
@@ -70,16 +69,7 @@ export const asyncCall = async (
   }
 }
 
-// type Parameters<T> = T extends (...args: infer T) => any ? T : never
-// type Parameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never;
-export const createToastWrapper = (f: Function, title: string, description = "", messageType = MessageType.INFO) => {
-  return async (...args: any[]) => {
-    createToastWithType(title, description, messageType)
-    return await f(...args)
-  }
-}
-
-export const errorCallbackWithToast = async (error: any) => {
+const errorCallbackWithToast = async (error: any) => {
   console.log(error)
   if (error instanceof Response) {
     let errorJson = await error.json()
@@ -112,7 +102,7 @@ const getAccount = async () => {
   asyncCall(RequestMethod.GET, url, postBody, console.log, console.log, true, true)
 }
 
-export const positionSide = async () => {
+const positionSide = async () => {
   const url = BASE + "/fapi/v1/positionSide/dual"
   const postBody = {
     dualSidePosition: false,
@@ -121,7 +111,7 @@ export const positionSide = async () => {
   asyncCall(RequestMethod.POST, url, postBody, console.log, console.log, true, true)
 }
 
-export const postLeverage = (
+export const postLeverage = async (
   symbol: string,
   leverage: number,
   handleFulfilled: Function = console.log,
@@ -133,11 +123,12 @@ export const postLeverage = (
     leverage,
     timestamp: getTimestamp()
   }
-  asyncCall(RequestMethod.POST, url, postBody, handleFulfilled, handleRejection, true, true)
+  return await asyncCall(RequestMethod.POST, url, postBody, handleFulfilled, handleRejection, true, true)
 }
 
-export const postLeverageWithToast = (symbol: string, leverage: number) => {
-  createToastWrapper(postLeverage, "Leverage Change Request Sent")(
+export const postLeverageWithToast = async (symbol: string, leverage: number) => {
+  createToastWithType("Leverage Change Request Sent")
+  return await postLeverage(
     symbol,
     leverage,
     (data: any) => {
@@ -148,7 +139,7 @@ export const postLeverageWithToast = (symbol: string, leverage: number) => {
   )
 }
 
-export const cancelTrade = (
+export const cancelTrade = async (
   symbol: string,
   orderID: number,
   handleFulfilled: Function = console.log,
@@ -160,7 +151,21 @@ export const cancelTrade = (
     orderID,
     timestamp: getTimestamp()
   }
-  asyncCall(RequestMethod.DELETE, url, postBody, handleFulfilled, handleRejection, true, true)
+  return await asyncCall(RequestMethod.DELETE, url, postBody, handleFulfilled, handleRejection, true, true)
+}
+
+export const cancelTradeWithToast = async (symbol: string, orderID: number) => {
+  createToastWithType("CANCEL SENT")
+  return await cancelTrade(
+    symbol,
+    orderID,
+    (data: any) => {
+      console.log(data)
+      createToastWithType("ORDER CANCELED", `cancel ${data.side} ${data.origQty} at $${data.price}`, MessageType.OK)
+      return data.id
+    },
+    errorCallbackWithToast
+  )
 }
 
 export const generateListenKey = async () => {
@@ -175,5 +180,51 @@ export const generateListenKey = async () => {
     errorCallbackWithToast,
     true,
     false
+  )
+}
+
+export const postOrder = async (
+  symbol: string,
+  side: Side,
+  orderType: OrderType,
+  quantity: number,
+  price: number,
+  handleFulfilled: Function = console.log,
+  handleRejection: Function = console.log
+) => {
+  const url = BASE + "/fapi/v1/order"
+  const postBody: TradeOrderBody = {
+    symbol: symbol,
+    side: side,
+    type: orderType,
+    quantity: quantity,
+    price: price,
+    timeInForce: TimeInForce.GTC,
+    newOrderRespType: NewOrderRespType.RESULT,
+    timestamp: getTimestamp()
+  }
+  return await asyncCall(RequestMethod.POST, url, postBody, handleFulfilled, handleRejection, true, true)
+}
+
+export const postOrderWithToast = async (
+  symbol: string,
+  side: Side,
+  orderType: OrderType,
+  quantity: number,
+  price: number
+) => {
+  createToastWithType("ORDER SENT")
+  return await postOrder(
+    symbol,
+    side,
+    orderType,
+    quantity,
+    price,
+    (data: any) => {
+      console.log(data)
+      createToastWithType("ORDER CREATED", `${data.side} ${data.origQty} at $${data.price}`, MessageType.OK)
+      return data.id
+    },
+    errorCallbackWithToast
   )
 }

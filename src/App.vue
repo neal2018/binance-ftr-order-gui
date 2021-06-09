@@ -47,7 +47,7 @@
         </p>
         <p>
           leveredOrderAmount: USDT {{ (orderUSDT * leverage).toFixed(2) }} / BTC
-          {{ (orderAmount * leverage).toFixed(2) }}
+          {{ (orderAmount * leverage).toFixed(4) }}
         </p>
         <p>feeRate: <input class="tiny-input" type="number" v-model="freeRate" /></p>
         <p>leveredFee: {{ tradingFee.toFixed(4) }} ({{ actualFeeRates.toFixed(4) }}%)</p>
@@ -64,6 +64,7 @@
         <Select :msgs="Object.keys(downPriceShow)" v-model:data="downPriceSelected" />
         <Select :msgs="Object.keys(upPriceShow)" v-model:data="upPriceSelected" />
       </div>
+      <OrderShower />
     </div>
   </MouseCheckWrapper>
 </template>
@@ -75,22 +76,33 @@ import Setting from "@/components/Setting.vue"
 import Select from "@/components/Select.vue"
 import MessageContenter from "@/components/MessageContenter.vue"
 import MouseCheckWrapper from "@/components/MouseCheckWrapper.vue"
-import { keys } from "@/data/keys"
 import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/data/prices"
 import { computed, watch } from "vue"
 import { postLeverageWithToast } from "@/composables/restfulAPI"
-import { postOrderWithToast } from "@/composables/postOrder"
+import { postOrderWithStopAndProfit } from "@/composables/postOrder"
 import { Side, OrderType } from "@/composables/types"
-import type { TradeOrderBody } from "@/composables/types"
+import { isVerified, checkVerifiedWithToast } from "@/data/tradeInfo"
+import { roundToPrecision } from "@/composables/shared"
+import OrderShower from "@/components/OrderShower.vue"
 
 ref: symbol = "BTCUSDT"
 
 const click = () => {
-  postOrderWithToast("BTCUSDT", Side.BUY, OrderType.LIMIT, 0.001, 30500.11)
+  if (checkVerifiedWithToast()) {
+    postOrderWithStopAndProfit(
+      "BTCUSDT",
+      Side.BUY,
+      OrderType.LIMIT,
+      orderAmount,
+      roundToPrecision(openPrice.value, 2),
+      roundToPrecision(openPrice.value + downPriceDiff.value, 2),
+      roundToPrecision(openPrice.value + upPriceDiff.value, 2)
+    )
+  }
 }
 
 ref: freeRate = 0.036
-ref: orderAmount = 0.01 // btc
+ref: orderAmount = 0.001 // btc
 ref: floatPrice = computed(() => parseFloat(price.value))
 
 const leverageOptions = [1, 2, 5, 25, 50, 75, 100, 125]
@@ -98,7 +110,10 @@ const leverageShow = leverageOptions.reduce((map, e) => ((map[e + "x"] = e), map
 ref: leverageSelected = Object.keys(leverageShow)[Object.keys(leverageShow).length - 1]
 const leverage = computed(() => leverageShow[leverageSelected])
 
-watch(leverage, () => postLeverageWithToast(symbol, leverage.value))
+watch(
+  () => isVerified.value && leverage.value,
+  () => isVerified.value && postLeverageWithToast(symbol, leverage.value)
+)
 
 const STDMultiplierOptions = [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 3, 5, 10]
 const openPriceShow = STDMultiplierOptions.reduce(

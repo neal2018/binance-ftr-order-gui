@@ -15,6 +15,12 @@ export enum Side {
   BUY = "BUY"
 }
 
+export namespace Side {
+  export function reverse(val: Side): Side {
+    return val === Side.SELL ? Side.BUY : Side.SELL
+  }
+}
+
 export enum PositionSide {
   BOTH = "BOTH",
   LONG = "LONG",
@@ -89,4 +95,14 @@ export interface TradeOrderBody {
   newOrderRespType?: NewOrderRespType
   recvWindow?: number
   timestamp: number
+}
+
+export interface Order {
+  id: number
+  tradePair: string
+  status: OrderStatus
+  price: string
+  quantity: string
+  spentFee: string
+  side: Side
 }

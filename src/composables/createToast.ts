@@ -18,7 +18,7 @@ export const createToast = (title: string, description = "", options: object = {
   return id
 }
 
-export const createToastWithType = (title: string, description: string, messageType: MessageType) => {
+export const createToastWithType = (title: string, description = "", messageType = MessageType.INFO) => {
   createToast(title, description, { messageType })
 }
 

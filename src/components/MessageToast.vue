@@ -40,7 +40,7 @@ const props = defineProps({
   },
   timeout: {
     type: Number,
-    default: 1000000
+    default: 10000
   },
   messageType: {
     type: String as PropType<MessageType>,
