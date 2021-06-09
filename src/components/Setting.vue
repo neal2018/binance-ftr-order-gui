@@ -31,7 +31,11 @@ const close = () => {
   isShow = false
 }
 const confirm = () => {
-  receiveSignal()
+  if (keys.apiPublicKey && keys.apiPublicKey) {
+    localStorage.setItem("apiPublicKey", keys.apiPublicKey)
+    localStorage.setItem("apiPrivateKey", keys.apiPublicKey)
+    receiveSignal()
+  }
   close()
 }
 </script>
