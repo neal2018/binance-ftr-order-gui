@@ -42,21 +42,21 @@
         <br />
         <p>leverage: {{ leverage + "x" }}</p>
         <p>
-          orderAmount: USDT {{ orderUSDT.toFixed(2) }} / BTC
+          orderAmount: USDT {{ orderUSDT.toFixed(4) }} / BTC
           <input class="tiny-input" type="number" v-model="orderAmount" />
         </p>
         <p>
-          leveredOrderAmount: USDT {{ (orderUSDT * leverage).toFixed(2) }} / BTC
-          {{ (orderAmount * leverage).toFixed(4) }}
+          leveredOrderAmount: USDT {{ (orderUSDT * leverage).toFixed(4) }} / BTC
+          {{ (orderAmount * leverage).toFixed(6) }}
         </p>
         <p>feeRate: <input class="tiny-input" type="number" v-model="freeRate" /></p>
         <p>leveredFee: {{ tradingFee.toFixed(4) }} ({{ actualFeeRates.toFixed(4) }}%)</p>
       </div>
       <div class="flex justify-around mx-auto max-w-xl">
-        <OrderButton msg="Long2" color="green" @click="click" />
-        <OrderButton msg="Long1" color="green" />
-        <OrderButton msg="Short1" color="red" />
-        <OrderButton msg="Short2" color="red" />
+        <OrderButton msg="Long2" color="green" @click="long" />
+        <OrderButton msg="Long1" color="green" @click="long" />
+        <OrderButton msg="Short1" color="red" @click="short" />
+        <OrderButton msg="Short2" color="red" @click="short" />
       </div>
       <div class="flex justify-around mx-auto font-mono">
         <Select :msgs="Object.keys(leverageShow)" v-model:data="leverageSelected" />
@@ -87,13 +87,13 @@ import OrderShower from "@/components/OrderShower.vue"
 
 ref: symbol = "BTCUSDT"
 
-const click = () => {
+const long = () => {
   if (checkVerifiedWithToast()) {
     postOrderWithStopAndProfit(
       "BTCUSDT",
       Side.BUY,
       OrderType.LIMIT,
-      orderAmount,
+      orderAmount * leverage.value,
       roundToPrecision(openPrice.value, 2),
       roundToPrecision(openPrice.value + downPriceDiff.value, 2),
       roundToPrecision(openPrice.value + upPriceDiff.value, 2)
@@ -101,8 +101,22 @@ const click = () => {
   }
 }
 
+const short = () => {
+  if (checkVerifiedWithToast()) {
+    postOrderWithStopAndProfit(
+      "BTCUSDT",
+      Side.SELL,
+      OrderType.LIMIT,
+      orderAmount * leverage.value,
+      roundToPrecision(openShortPrice.value, 2),
+      roundToPrecision(openPrice.value + upPriceDiff.value, 2),
+      roundToPrecision(openPrice.value + downPriceDiff.value, 2)
+    )
+  }
+}
+
 ref: freeRate = 0.036
-ref: orderAmount = 0.001 // btc
+ref: orderAmount = 0.00008 // btc
 ref: floatPrice = computed(() => parseFloat(price.value))
 
 const leverageOptions = [1, 2, 5, 25, 50, 75, 100, 125]
@@ -122,6 +136,7 @@ const openPriceShow = STDMultiplierOptions.reduce(
 )
 ref: openPriceSelected = Object.keys(openPriceShow)[5]
 const openPrice = computed(() => floatPrice - openPriceShow[openPriceSelected] * priceSTD30.value)
+const openShortPrice = computed(() => floatPrice + openPriceShow[openPriceSelected] * priceSTD30.value)
 
 const orderUSDT = computed(() => openPrice.value * orderAmount)
 const noLossPriceDiff = computed(() => freeRate * 0.01 * openPrice.value)
@@ -150,6 +165,6 @@ input[type="number"]::-webkit-inner-spin-button {
   appearance: none;
 }
 .tiny-input {
-  @apply relative focus:z-10 px-1 w-16 bg-gray-700 appearance-none;
+  @apply relative focus:z-10 px-1 w-20 bg-gray-700 appearance-none;
 }
 </style>

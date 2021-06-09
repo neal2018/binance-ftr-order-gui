@@ -203,6 +203,9 @@ export const postOrder = async (
     newOrderRespType: NewOrderRespType.RESULT,
     timestamp: getTimestamp()
   }
+  if (orderType === OrderType.STOP) {
+    postBody.stopPrice = price
+  }
   return await asyncCall(RequestMethod.POST, url, postBody, handleFulfilled, handleRejection, true, true)
 }
 
@@ -221,9 +224,8 @@ export const postOrderWithToast = async (
     quantity,
     price,
     (data: any) => {
-      console.log(data)
       createToastWithType("ORDER CREATED", `${data.side} ${data.origQty} at $${data.price}`, MessageType.OK)
-      return data.id
+      return data.orderId
     },
     errorCallbackWithToast
   )

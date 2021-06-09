@@ -54,7 +54,7 @@ export enum OrderType {
 
 export enum OrderStatus {
   NEW = "NEW",
-  PARTIALLY_FILLE = "PARTIALLY_FILLED",
+  PARTIALLY_FILLED = "PARTIALLY_FILLED",
   FILLED = "FILLED",
   CANCELED = "CANCELED",
   EXPIRED = "EXPIRED",
