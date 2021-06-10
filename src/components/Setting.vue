@@ -11,8 +11,8 @@
         <input class="text-input" type="text" placeholder="api-private-key" v-model="keys.apiPrivateKey" />
       </div>
       <div class="absolute sm:bottom-10 bottom-1/4 right-0 flex justify-around px-5 w-full">
-        <OrderButton class="sm:m-5 sm:w-40" msg="Confirm" color="green" @click="confirm" />
-        <OrderButton class="sm:m-5 sm:w-40" msg="Cancel" color="red" @click="close" />
+        <OrderButton class="setting-button" msg="Confirm" color="green" @click="confirm" />
+        <OrderButton class="setting-button" msg="Cancel" color="red" @click="close" />
       </div>
     </div>
   </div>
@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import OrderButton from "@/components/OrderButton.vue"
-import { keys } from "@/data/keys"
+import { keys, saveKeys } from "@/data/keys"
 import { receiveSignal } from "@/data/tradeInfo"
 
 ref: isShow = false
@@ -31,11 +31,8 @@ const close = () => {
   isShow = false
 }
 const confirm = () => {
-  if (keys.apiPublicKey && keys.apiPrivateKey) {
-    localStorage.setItem("apiPublicKey", keys.apiPublicKey)
-    localStorage.setItem("apiPrivateKey", keys.apiPrivateKey)
-    receiveSignal()
-  }
+  saveKeys()
+  receiveSignal()
   close()
 }
 </script>
@@ -68,5 +65,8 @@ const confirm = () => {
       focus:outline-none
       focus:ring-purple-600
       focus:ring-2;
+}
+.setting-button {
+  @apply m-1 px-1 py-2 <sm:flex-grow sm:px-6 sm:py-4 sm:m-5 sm:w-40;
 }
 </style>

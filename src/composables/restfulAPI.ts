@@ -1,6 +1,6 @@
 import { keys } from "@/data/keys"
 import { RequestMethod, MessageType, Side, OrderType, TimeInForce, NewOrderRespType } from "@/composables/types"
-import { TradeOrderBody } from "@/composables/types"
+import type { TradeOrderBody } from "@/composables/types"
 import { createToastWithType } from "@/composables/createToast"
 
 const BASE = "https://fapi.binance.com"
@@ -63,6 +63,7 @@ const asyncCall = async (
       throw response
     }
     const data = await response.json()
+    console.log("call success", data)
     return handleFulfilled(data)
   } catch (error) {
     return handleRejection(error)
@@ -160,7 +161,6 @@ export const cancelTradeWithToast = async (symbol: string, orderID: number) => {
     symbol,
     orderID,
     (data: any) => {
-      console.log(data)
       createToastWithType("ORDER CANCELED", `cancel ${data.side} ${data.origQty} at $${data.price}`, MessageType.OK)
       return data.id
     },

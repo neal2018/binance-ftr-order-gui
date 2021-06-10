@@ -1,6 +1,6 @@
+import { reactive } from "vue"
 import { Side, OrderType } from "@/composables/types"
 import { postOrderWithToast } from "@/composables/restfulAPI"
-import { reactive } from "vue"
 
 export const stopAndProfitPrices = reactive({} as { [id: number]: { stopPrice: number; profitPrice: number } })
 //TODO: watch verified and get all active order

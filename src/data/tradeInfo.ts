@@ -27,7 +27,7 @@ export const order2stopAndProfit = {} as { [originId: number]: { originId: numbe
 
 const streamsCallback = {
   ORDER_TRADE_UPDATE: async (data: typeof exampleRespondForORDER_TRADE_UPDATE) => {
-    let order = (orders[data.o.i] = {
+    let order = {
       id: data.o.i,
       tradePair: data.o.s,
       status: data.o.X as OrderStatus,
@@ -35,12 +35,11 @@ const streamsCallback = {
       quantity: data.o.q,
       spentFee: data.o.n,
       side: data.o.S as Side
-    })
+    }
     if (order.status === OrderStatus.FILLED) {
       createToastWithType("ORDER FILLED", `${order.side} ${order.quantity} at ${order.price}`, MessageType.OK)
       // handle initial order
       if (stopAndProfitPrices[order.id]) {
-        console.log("profit")
         let [profitId, stopId] = await Promise.all([
           postOrderWithToast(
             order.tradePair,
@@ -57,6 +56,7 @@ const streamsCallback = {
             stopAndProfitPrices[order.id].stopPrice
           )
         ])
+        console.log("cover id:", profitId, stopId)
         if (typeof profitId === "number" && typeof stopId === "number") {
           stop2order[stopId] = { originId: order.id, stop: stopId, profit: profitId }
           profit2order[profitId] = { originId: order.id, stop: stopId, profit: profitId }
@@ -78,6 +78,8 @@ const streamsCallback = {
         delete stop2order[order.id]
       }
     }
+    // update orders last to reactively update other pages
+    orders[data.o.i] = order
   }
 }
 
@@ -102,7 +104,7 @@ watch(listenKey, () => {
   socket = new WebSocket(`wss://fstream.binance.com/ws/${listenKey.value}`)
   socket.addEventListener("message", (event) => {
     const eventJson = JSON.parse(event.data)
-    console.log(eventJson)
+    console.log(eventJson["e"], eventJson)
     streamsCallback[eventJson["e"] as StreamType] && streamsCallback[eventJson["e"] as StreamType](eventJson)
   })
   isVerified.value = true

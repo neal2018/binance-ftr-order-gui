@@ -53,10 +53,10 @@
         <p>leveredFee: {{ tradingFee.toFixed(4) }} ({{ actualFeeRates.toFixed(4) }}%)</p>
       </div>
       <div class="flex justify-around mx-auto max-w-xl">
-        <OrderButton msg="Long2" color="green" @click="long" />
-        <OrderButton msg="Long1" color="green" @click="long" />
-        <OrderButton msg="Short1" color="red" @click="short" />
-        <OrderButton msg="Short2" color="red" @click="short" />
+        <OrderButton class="order-button" msg="Long2" color="green" @click="long" />
+        <OrderButton class="order-button" msg="Long1" color="green" @click="long" />
+        <OrderButton class="order-button" msg="Short1" color="red" @click="short" />
+        <OrderButton class="order-button" msg="Short2" color="red" @click="short" />
       </div>
       <div class="flex justify-around mx-auto font-mono">
         <Select :msgs="Object.keys(leverageShow)" v-model:data="leverageSelected" />
@@ -70,27 +70,25 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue"
 import OrderButton from "@/components/OrderButton.vue"
 import PriceShower from "@/components/PriceShower.vue"
 import Setting from "@/components/Setting.vue"
 import Select from "@/components/Select.vue"
 import MessageContenter from "@/components/MessageContenter.vue"
 import MouseCheckWrapper from "@/components/MouseCheckWrapper.vue"
-import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/data/prices"
-import { computed, watch } from "vue"
-import { postLeverageWithToast } from "@/composables/restfulAPI"
+import OrderShower from "@/components/OrderShower.vue"
 import { postOrderWithStopAndProfit } from "@/composables/postOrder"
 import { Side, OrderType } from "@/composables/types"
-import { isVerified, checkVerifiedWithToast } from "@/data/tradeInfo"
 import { roundToPrecision } from "@/composables/shared"
-import OrderShower from "@/components/OrderShower.vue"
-
-ref: symbol = "BTCUSDT"
+import { checkVerifiedWithToast } from "@/data/tradeInfo"
+import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/data/prices"
+import { leverage, leverageSelected, leverageShow, symbol } from "@/data/tradeConfig"
 
 const long = () => {
   if (checkVerifiedWithToast()) {
     postOrderWithStopAndProfit(
-      "BTCUSDT",
+      symbol.value,
       Side.BUY,
       OrderType.LIMIT,
       orderAmount * leverage.value,
@@ -104,7 +102,7 @@ const long = () => {
 const short = () => {
   if (checkVerifiedWithToast()) {
     postOrderWithStopAndProfit(
-      "BTCUSDT",
+      symbol.value,
       Side.SELL,
       OrderType.LIMIT,
       orderAmount * leverage.value,
@@ -119,17 +117,7 @@ ref: freeRate = 0.036
 ref: orderAmount = 0.00008 // btc
 ref: floatPrice = computed(() => parseFloat(price.value))
 
-const leverageOptions = [1, 2, 5, 25, 50, 75, 100, 125]
-const leverageShow = leverageOptions.reduce((map, e) => ((map[e + "x"] = e), map), {} as { [key: string]: number })
-ref: leverageSelected = Object.keys(leverageShow)[Object.keys(leverageShow).length - 1]
-const leverage = computed(() => leverageShow[leverageSelected])
-
-watch(
-  () => isVerified.value && leverage.value,
-  () => isVerified.value && postLeverageWithToast(symbol, leverage.value)
-)
-
-const STDMultiplierOptions = [0, 0.1, 0.3, 0.5, 0.7, 1, 2, 3, 5, 10]
+const STDMultiplierOptions = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 5, 10]
 const openPriceShow = STDMultiplierOptions.reduce(
   (map, e) => ((map[`p - ${e}*std30`] = e), map),
   {} as { [key: string]: number }
@@ -166,5 +154,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 .tiny-input {
   @apply relative focus:z-10 px-1 w-20 bg-gray-700 appearance-none;
+}
+.order-button {
+  @apply m-1 px-1 py-2 <sm:flex-grow sm:px-6 sm:py-4 sm:my-10;
 }
 </style>
