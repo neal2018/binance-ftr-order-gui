@@ -7,6 +7,7 @@
       <div
         class="mx-auto p-8 max-w-2xl text-center text-white font-mono bg-gray-700 rounded-xl shadow-md overflow-hidden"
       >
+        <TradingView class="pb-10"/>
         <PriceShower :price="price" />
         <div class="m-2 sm:m-8">
           <p>
@@ -84,6 +85,7 @@ import { roundToPrecision } from "@/composables/shared"
 import { checkVerifiedWithToast } from "@/data/tradeInfo"
 import { price, count, priceMeanRolling, priceMean30, priceSTD30 } from "@/data/prices"
 import { leverage, leverageSelected, leverageShow, symbol } from "@/data/tradeConfig"
+import TradingView from "@/components/TradingView.vue"
 
 const long = () => {
   if (checkVerifiedWithToast()) {
@@ -107,8 +109,8 @@ const short = () => {
       OrderType.LIMIT,
       orderAmount * leverage.value,
       roundToPrecision(openShortPrice.value, 2),
-      roundToPrecision(openPrice.value + upPriceDiff.value, 2),
-      roundToPrecision(openPrice.value + downPriceDiff.value, 2)
+      roundToPrecision(openShortPrice.value - downPriceDiff.value, 2),
+      roundToPrecision(openShortPrice.value - upPriceDiff.value, 2)
     )
   }
 }

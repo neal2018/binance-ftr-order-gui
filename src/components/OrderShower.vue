@@ -44,6 +44,11 @@
       <div class="text-center">{{ order }}</div>
       >
     </div>
+    order2stopAndProfit details:
+    <div class="flex justify-between border-2 text-center py-5 px-2 rounded-xl" v-for="order of order2stopAndProfit">
+      <div class="text-center">{{ order }}</div>
+      >
+    </div>
   </div>
 </template>
 
