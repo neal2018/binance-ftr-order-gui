@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, watch } from "vue"
+import { defineProps, ref, watch } from "vue"
 
 const props = defineProps({
   price: {
@@ -14,15 +14,15 @@ const props = defineProps({
   }
 })
 
-ref: arrow = "↓"
+const arrow = ref("↓")
 
 watch(
   () => props.price,
   (price, prevPrice) => {
     if (price.length > prevPrice.length || price > prevPrice) {
-      arrow = "↑"
+      arrow.value = "↑"
     } else {
-      arrow = "↓"
+      arrow.value = "↓"
     }
   }
 )

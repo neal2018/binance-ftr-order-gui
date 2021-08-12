@@ -22,13 +22,14 @@
 import OrderButton from "@/components/OrderButton.vue"
 import { keys, saveKeys } from "@/data/keys"
 import { receiveSignal } from "@/data/tradeInfo"
+import { ref } from "@vue/runtime-core";
 
-ref: isShow = false
+const isShow = ref(false)
 const open = () => {
-  isShow = true
+  isShow.value = true
 }
 const close = () => {
-  isShow = false
+  isShow.value = false
 }
 const confirm = () => {
   saveKeys()

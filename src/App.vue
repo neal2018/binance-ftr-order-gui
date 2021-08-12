@@ -71,7 +71,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import OrderButton from "@/components/OrderButton.vue"
 import PriceShower from "@/components/PriceShower.vue"
 import Setting from "@/components/Setting.vue"
@@ -93,7 +93,7 @@ const long = () => {
       symbol.value,
       Side.BUY,
       OrderType.LIMIT,
-      orderAmount * leverage.value,
+      orderAmount.value * leverage.value,
       roundToPrecision(openPrice.value, 2),
       roundToPrecision(openPrice.value + downPriceDiff.value, 2),
       roundToPrecision(openPrice.value + upPriceDiff.value, 2)
@@ -107,7 +107,7 @@ const short = () => {
       symbol.value,
       Side.SELL,
       OrderType.LIMIT,
-      orderAmount * leverage.value,
+      orderAmount.value * leverage.value,
       roundToPrecision(openShortPrice.value, 2),
       roundToPrecision(openShortPrice.value - downPriceDiff.value, 2),
       roundToPrecision(openShortPrice.value - upPriceDiff.value, 2)
@@ -115,38 +115,38 @@ const short = () => {
   }
 }
 
-ref: freeRate = 0.036
-ref: orderAmount = 0.00008 // btc
-ref: floatPrice = computed(() => parseFloat(price.value))
+const freeRate = ref(0.036)
+const orderAmount = ref(0.00008) // btc
+const floatPrice = computed(() => parseFloat(price.value))
 
 const STDMultiplierOptions = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 5, 10]
 const openPriceShow = STDMultiplierOptions.reduce(
   (map, e) => ((map[`p - ${e}*std30`] = e), map),
   {} as { [key: string]: number }
 )
-ref: openPriceSelected = Object.keys(openPriceShow)[5]
-const openPrice = computed(() => floatPrice - openPriceShow[openPriceSelected] * priceSTD30.value)
-const openShortPrice = computed(() => floatPrice + openPriceShow[openPriceSelected] * priceSTD30.value)
+const openPriceSelected = ref(Object.keys(openPriceShow)[5])
+const openPrice = computed(() => floatPrice.value - openPriceShow[openPriceSelected.value] * priceSTD30.value)
+const openShortPrice = computed(() => floatPrice.value + openPriceShow[openPriceSelected.value] * priceSTD30.value)
 
-const orderUSDT = computed(() => openPrice.value * orderAmount)
-const noLossPriceDiff = computed(() => freeRate * 0.01 * openPrice.value)
-const tradingFee = computed(() => freeRate * leverage.value * orderUSDT.value * 0.01)
-const actualFeeRates = computed(() => freeRate * leverage.value)
+const orderUSDT = computed(() => openPrice.value * orderAmount.value)
+const noLossPriceDiff = computed(() => freeRate.value * 0.01 * openPrice.value)
+const tradingFee = computed(() => freeRate.value * leverage.value * orderUSDT.value * 0.01)
+const actualFeeRates = computed(() => freeRate.value * leverage.value)
 
 const downPriceShow = STDMultiplierOptions.reduce(
   (map, e) => ((map[`op - ${e}*std30`] = e), map),
   {} as { [key: string]: number }
 )
-ref: downPriceSelected = Object.keys(downPriceShow)[5]
-const downPriceDiff = computed(() => -downPriceShow[downPriceSelected] * priceSTD30.value)
+const downPriceSelected = ref(Object.keys(downPriceShow)[5])
+const downPriceDiff = computed(() => -downPriceShow[downPriceSelected.value] * priceSTD30.value)
 const downPercent = computed(() => (downPriceDiff.value / openPrice.value) * leverage.value * 100)
 
 const upPriceShow = STDMultiplierOptions.reduce(
   (map, e) => ((map[`op + ${e}*std30`] = e), map),
   {} as { [key: string]: number }
 )
-ref: upPriceSelected = Object.keys(upPriceShow)[5]
-const upPriceDiff = computed(() => upPriceShow[upPriceSelected] * priceSTD30.value)
+const upPriceSelected = ref(Object.keys(upPriceShow)[5])
+const upPriceDiff = computed(() => upPriceShow[upPriceSelected.value] * priceSTD30.value)
 const upPercent = computed(() => (upPriceDiff.value / openPrice.value) * leverage.value * 100)
 </script>
 
