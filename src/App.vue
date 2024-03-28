@@ -94,9 +94,9 @@ const long = () => {
       Side.BUY,
       OrderType.LIMIT,
       orderAmount.value * leverage.value,
-      roundToPrecision(openPrice.value, 2),
-      roundToPrecision(openPrice.value + downPriceDiff.value, 2),
-      roundToPrecision(openPrice.value + upPriceDiff.value, 2)
+      roundToPrecision(openPrice.value, 1),
+      roundToPrecision(openPrice.value + downPriceDiff.value, 1),
+      roundToPrecision(openPrice.value + upPriceDiff.value, 1)
     )
   }
 }
@@ -108,9 +108,9 @@ const short = () => {
       Side.SELL,
       OrderType.LIMIT,
       orderAmount.value * leverage.value,
-      roundToPrecision(openShortPrice.value, 2),
-      roundToPrecision(openShortPrice.value - downPriceDiff.value, 2),
-      roundToPrecision(openShortPrice.value - upPriceDiff.value, 2)
+      roundToPrecision(openShortPrice.value, 1),
+      roundToPrecision(openShortPrice.value - downPriceDiff.value, 1),
+      roundToPrecision(openShortPrice.value - upPriceDiff.value, 1)
     )
   }
 }
