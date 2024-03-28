@@ -9,6 +9,7 @@ jobs:
 
       - name: Install and Build
         run: |
+          yarn config set strict-ssl false
           yarn
           yarn build
       - name: Deploy
